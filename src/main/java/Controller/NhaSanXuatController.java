@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import Model.NhaSanXuat;
 import Model.NhaSanXuatModel;
 
-
 /**
  * Servlet implementation class NhaSanXuatControllerr
  */
@@ -27,7 +26,7 @@ public class NhaSanXuatController extends HttpServlet {
 		model = new NhaSanXuatModel();
 	}
 
-		@Override
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		if (request.getParameter("submit") != null) {
@@ -54,7 +53,7 @@ public class NhaSanXuatController extends HttpServlet {
 		try {
 			List<NhaSanXuat> nhaSanXuatList = model.getAllNhaSanXuat();
 			request.setAttribute("nhaSanXuatList", nhaSanXuatList);
-			request.getRequestDispatcher("view/nhasanxuatview.jsp").forward(request, response);
+			request.getRequestDispatcher("category/dashboard_nhasanxuat.jsp").forward(request, response);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.sendRedirect(request.getContextPath() + "/error.jsp");

@@ -1,10 +1,11 @@
-package Controller;
+package ControllerNhasanxuat;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,10 +13,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import Model.NhaSanXuatModel;
+import ModelNhasanxuat.NhaSanXuat;
+import ModelNhasanxuat.NhaSanXuatModel;
 
-@WebServlet("/editnhasanxuatcontroller")
-public class Editnhasanxuatcontroller extends HttpServlet {
+@WebServlet("/addnhasanxuatcontroller")
+public class Addnhasanxuatcontroller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -26,7 +28,7 @@ public class Editnhasanxuatcontroller extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public Editnhasanxuatcontroller() {
+	public Addnhasanxuatcontroller() {
 		super();
 	}
 
@@ -37,7 +39,15 @@ public class Editnhasanxuatcontroller extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Handling GET requests (if needed)
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		try {
+			NhaSanXuatModel model = new NhaSanXuatModel();
+			List<NhaSanXuat> nhaSanXuatList = model.getAllNhaSanXuat();
+			request.setAttribute("nhaSanXuatList", nhaSanXuatList);
+			request.getRequestDispatcher("view/nhasanxuatview.jsp").forward(request, response);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			response.sendRedirect(request.getContextPath() + "/error.jsp");
+		}
 	}
 
 	/**
@@ -46,26 +56,21 @@ public class Editnhasanxuatcontroller extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html");
-		String maNhaSanXuatStr = request.getParameter("MaNhaSanXuat");
-		int maNhaSanXuat = Integer.parseInt(maNhaSanXuatStr);
-		String tenNhaSanXuat = request.getParameter("ten_nhasx_" + maNhaSanXuat);
-		String diaChi = request.getParameter("dia_chi" + maNhaSanXuat);
-		String soDienThoai = request.getParameter("so_dien_thoai" + maNhaSanXuat);
-		String email = request.getParameter("email" + maNhaSanXuat);
+		String name = request.getParameter("ten_nhasx");
+		String address = request.getParameter("dia_chi");
+		String phone = request.getParameter("so_dt");
+		String email = request.getParameter("Email");
 
 		// Assuming you have a valid JDBC connection
 		try {
 			NhaSanXuatModel model = new NhaSanXuatModel();
-			model.updateNhaSanXuat(maNhaSanXuat, tenNhaSanXuat, diaChi, soDienThoai, email);
+			model.insertNhaSanXuat(name, address, phone, email);
+//            insertNhaSanXuat(name, address, phone, email);
 			response.sendRedirect(request.getContextPath() + "/NhaSanXuatController");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.sendRedirect(request.getContextPath() + "/error.jsp"); // Redirect to error page
 		}
 	}
-
-	// Helper method to update data in the database
 
 }

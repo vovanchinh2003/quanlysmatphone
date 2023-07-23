@@ -1,4 +1,4 @@
-package Model;
+package ModelNhasanxuat;
 
 public class NhaSanXuat {
 	 private int maNhaSanXuat;

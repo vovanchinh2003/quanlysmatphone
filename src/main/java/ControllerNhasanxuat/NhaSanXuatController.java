@@ -1,4 +1,4 @@
-package Controller;
+package ControllerNhasanxuat;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import Model.NhaSanXuat;
-import Model.NhaSanXuatModel;
+import ModelNhasanxuat.NhaSanXuat;
+import ModelNhasanxuat.NhaSanXuatModel;
 
 /**
  * Servlet implementation class NhaSanXuatControllerr

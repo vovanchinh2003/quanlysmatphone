@@ -1,11 +1,10 @@
-package Controller;
+package ControllerNhasanxuat;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,11 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import Model.NhaSanXuat;
-import Model.NhaSanXuatModel;
+import ModelNhasanxuat.NhaSanXuatModel;
 
-@WebServlet("/addnhasanxuatcontroller")
-public class Addnhasanxuatcontroller extends HttpServlet {
+@WebServlet("/deletenhasanxuatcontroller")
+public class Deletenhasanxuatcontroller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -28,7 +26,7 @@ public class Addnhasanxuatcontroller extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public Addnhasanxuatcontroller() {
+	public Deletenhasanxuatcontroller() {
 		super();
 	}
 
@@ -39,14 +37,16 @@ public class Addnhasanxuatcontroller extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Handling GET requests (if needed)
+		String maNhaSanXuatStr = request.getParameter("MaNhaSanXuat");
+		int maNhaSanXuat = Integer.parseInt(maNhaSanXuatStr);
+		// Assuming you have a valid JDBC connection
 		try {
 			NhaSanXuatModel model = new NhaSanXuatModel();
-			List<NhaSanXuat> nhaSanXuatList = model.getAllNhaSanXuat();
-			request.setAttribute("nhaSanXuatList", nhaSanXuatList);
-			request.getRequestDispatcher("view/nhasanxuatview.jsp").forward(request, response);
+			model.deleteNhaSanXuat(maNhaSanXuat);
+			response.sendRedirect(request.getContextPath() + "/NhaSanXuatController");
 		} catch (SQLException e) {
 			e.printStackTrace();
-			response.sendRedirect(request.getContextPath() + "/error.jsp");
+			response.getWriter().write("Lỗi xóa sản phẩm: " + e.getMessage());
 		}
 	}
 
@@ -56,21 +56,7 @@ public class Addnhasanxuatcontroller extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String name = request.getParameter("ten_nhasx");
-		String address = request.getParameter("dia_chi");
-		String phone = request.getParameter("so_dt");
-		String email = request.getParameter("Email");
 
-		// Assuming you have a valid JDBC connection
-		try {
-			NhaSanXuatModel model = new NhaSanXuatModel();
-			model.insertNhaSanXuat(name, address, phone, email);
-//            insertNhaSanXuat(name, address, phone, email);
-			response.sendRedirect(request.getContextPath() + "/NhaSanXuatController");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			response.sendRedirect(request.getContextPath() + "/error.jsp"); // Redirect to error page
-		}
 	}
 
 }

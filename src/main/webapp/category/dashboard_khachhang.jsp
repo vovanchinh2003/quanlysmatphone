@@ -1,3 +1,7 @@
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.Statement"%>
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.Connection"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -19,45 +23,39 @@
 	crossorigin="anonymous">
 </head>
 <body>
+
 	<div class="containesr">
 		<div class="navigation">
 			<ul>
 				<li><a href="#"> <span class="icon"><i
 							class='bx bxl-android'></i></span> <span class="title">Brand Name</span>
 				</a></li>
-				<li><a
-					href="">
-						<span class="icon"><i class='bx bx-home'></i></span> <span
-						class="title">Dashboard</span>
+				<li><a href=""> <span class="icon"><i
+							class='bx bx-home'></i></span> <span class="title">Dashboard</span>
 				</a></li>
 				<li><a
 					href="http://localhost:8080/quanlysmatphone/NhaSanXuatController">
 						<span class="icon"><i class='bx bxl-product-hunt'></i></span> <span
 						class="title">Nhà sản xuất</span>
 				</a></li>
-				<li><a
-					href="">
-						<span class="icon"><i class='bx bxl-product-hunt'></i></span> <span
-						class="title">Sản phẩm</span>
+				<li><a href=""> <span class="icon"><i
+							class='bx bxl-product-hunt'></i></span> <span class="title">Sản
+							phẩm</span>
 				</a></li>
 				<li><a
 					href="http://localhost:8080/quanlysmatphone/khachHangController">
 						<span class="icon"><i class='bx bxs-user-account'></i></span> <span
 						class="title">Khách hàng</span>
 				</a></li>
-				<li><a
-					href="">
-						<span class="icon"><i class='bx bx-food-menu'></i></span> <span
-						class="title">Nhân viên</span>
+				<li><a href=""> <span class="icon"><i
+							class='bx bx-food-menu'></i></span> <span class="title">Nhân viên</span>
+				</a></li>
+				<li><a href=""> <span class="icon"><i
+							class='bx bx-captions'></i></span> <span class="title">Đơn hàng</span>
 				</a></li>
 				<li><a
-					href="">
-						<span class="icon"><i class='bx bx-captions'></i></span> <span
-						class="title">Đơn hàng</span>
-				</a></li>
-				<li><a
-					href="http://localhost:8080/quanlysmatphone/category/h.jsp">
-						<span class="icon"><i class='bx bx-message'></i></span> <span
+					href="http://localhost:8080/quanlysmatphone/category/h.jsp"> <span
+						class="icon"><i class='bx bx-message'></i></span> <span
 						class="title">Phản hồi</span>
 				</a></li>
 			</ul>
@@ -140,7 +138,7 @@
 
 			<div style="padding: 22px 32px;">
 				<div class="text">
-					<%@ page errorPage="view.jsp"%>
+					<%@ page errorPage="dashboard_sanpham.jsp"%>
 
 					<h1>Thông tin nhà sản xuất</h1>
 					</br>
@@ -155,38 +153,41 @@
 							width="100%">
 							<thead>
 								<tr>
-									<th>MaNhaSanXuat</th>
-									<th>TenNhaSanXuat</th>
+									<th>ID</th>
+									<th>TenKhachHang</th>
 									<th>DiaChi</th>
 									<th>SoDienThoai</th>
 									<th>Email</th>
-									<th>Edit</th>
+									<th>VaiTro</th>
+									<th>tendangnhap</th>
+									<th>anh</th>
+									<th>Update</th>
 									<th>Delete</th>
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="nsx" items="${nhaSanXuatList}"
-									varStatus="status">
+								<c:forEach var="sp" items="${khachhanglList}" varStatus="status">
 									<tr>
 										<td><c:out value="${status.index + 1}" /></td>
-										<td><c:out value="${nsx.tenNhaSanXuat}" /></td>
-										<td><c:out value="${nsx.diaChi}" /></td>
-										<td><c:out value="${nsx.soDienThoai}" /></td>
-										<td><c:out value="${nsx.email}" /></td>
+										<td><c:out value="${sp.tenKhachHang}" /></td>
+										<td><c:out value="${sp.diaChi}" /></td>
+										<td><c:out value="${sp.soDienThoai}" /></td>
+										<td><c:out value="${sp.email}" /></td>
+										<td><c:out value="${sp.vaiTro}" /></td>
+										<td><c:out value="${sp.tendangnhap}" /></td>
+										<td><img style="width: 100px; height: 100px;"
+											src="data:image/jpeg;base64,${sp.anhSanPhamBase64}"
+											alt="${sp.tenKhachHang}"></td>
 										<td>
 											<button class="edit-btn" data-bs-toggle="modal"
-												data-bs-target="#editModal${nsx.maNhaSanXuat}"
-												data-ma-nha-san-xuat="${nsx.maNhaSanXuat}"
-												data-ten-nha-san-xuat="${nsx.tenNhaSanXuat}"
-												data-dia-chi="${nsx.diaChi}"
-												data-so-dien-thoai="${nsx.soDienThoai}"
-												data-email="${nsx.email}">Cập nhật</button>
+												data-bs-target="#editModal${sp.maKhachHang}">Cập
+												nhật</button>
 										</td>
 										<td>
 											<button class="delete-btn">
 												<a style="text-decoration: none; color: #000;"
-													href="deletenhasanxuatcontroller?MaNhaSanXuat=${nsx.maNhaSanXuat}"
-													data-ma-nha-san-xuat="${nsx.maNhaSanXuat}">Xóa</a>
+													href="deletenhasanxuatcontroller?MaNhaSanXuat=${sp.maKhachHang}"
+													data-ma-nha-san-xuat="${sp.maKhachHang}">Xóa</a>
 											</button>
 										</td>
 									</tr>
@@ -200,17 +201,17 @@
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h5 class="modal-title" id="addModalLabel">Thêm nhà sản
-										xuất</h5>
+									<h5 class="modal-title" id="addModalLabel">Thêm khách hàng</h5>
 									<button type="button" class="btn-close" data-bs-dismiss="modal"
 										aria-label="Close"></button>
 								</div>
 								<div class="modal-body">
-									<form action="addnhasanxuatcontroller" method="POST">
+									<form action="core/xulyadd_khachhang.jsp" method="POST"
+										enctype="multipart/form-data">
 										<div class="mb-3">
-											<label for="ten_nhasx" class="form-label">Tên nhà sản
-												xuất:</label> <input type="text" class="form-control" id="ten_nhasx"
-												name="ten_nhasx">
+											<label for="ten_khachhang" class="form-label">Tên
+												khách hàng:</label> <input type="text" class="form-control"
+												id="ten_khachhang" name="ten_khachhang">
 										</div>
 										<div class="mb-3">
 											<label for="dia_chi" class="form-label">Địa chỉ:</label> <input
@@ -222,14 +223,29 @@
 												name="so_dt">
 										</div>
 										<div class="mb-3">
-											<label for="Email" class="form-label">Email:</label>
-											<textarea class="form-control" id="Email" name="Email"></textarea>
+											<label for="Email" class="form-label">Email:</label> <input
+												type="text" class="form-control" id="Email" name="Email">
+										</div>
+										<div class="mb-3">
+											<label for="ten_dangnhap" class="form-label">Tên đăng
+												nhập:</label> <input type="text" class="form-control"
+												id="ten_dangnhap" name="ten_dangnhap">
+										</div>
+										<div class="mb-3">
+											<label for="mat_khau" class="form-label">Mật khẩu:</label> <input
+												type="password" class="form-control" id="mat_khau"
+												name="mat_khau">
+										</div>
+										<div class="mb-3">
+											<label for="anh_khachhang" class="form-label">Ảnh
+												khách hàng:</label> <input type="file" class="form-control"
+												id="anh_khachhang" name="anh_khachhang">
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-secondary"
 												data-bs-dismiss="modal">Đóng</button>
-											<button type="submit" class="btn btn-primary">Thêm
-												sản phẩm</button>
+											<input type="submit" class="btn btn-primary" name="submit"
+												value="Add">
 										</div>
 									</form>
 								</div>
@@ -237,50 +253,63 @@
 						</div>
 					</div>
 
-					<!-- Modal -->
-					<c:forEach var="nsx" items="${nhaSanXuatList}">
-						<div class="modal fade" id="editModal${nsx.maNhaSanXuat}"
-							tabindex="-1" aria-labelledby="editModalLabel${nsx.maNhaSanXuat}"
+					<c:forEach var="row" items="${khachhanglList}" varStatus="status">
+						<!-- Edit Product Modal -->
+						<div class="modal fade" id="editModal${row.maKhachHang}"
+							tabindex="-1" aria-labelledby="editModalLabel${sp.maKhachHang}"
 							aria-hidden="true">
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">
-										<h5 class="modal-title" id="editModalLabel${nsx.maNhaSanXuat}">
-											Chỉnh sửa thông tin nhà sản xuất</h5>
+										<h5 class="modal-title" id="editModalLabel${row.maKhachHang}">
+											Chỉnh sửa thông tin khách hàng</h5>
 										<button type="button" class="btn-close"
 											data-bs-dismiss="modal" aria-label="Close"></button>
 									</div>
 									<div class="modal-body">
-										<form action="editnhasanxuatcontroller" method="POST">
-											<input type="hidden" name="MaNhaSanXuat"
-												value="${nsx.maNhaSanXuat}">
+										<form action="core/xulyedit_khachhang.jsp" method="POST">
+											<input type="hidden" name="MaKhachHang"
+												value="${sp.maKhachHang}">
 											<div class="mb-3">
-												<label for="ten_nhasx_${nsx.maNhaSanXuat}"
-													class="form-label">Tên nhà sản xuất:</label> <input
-													type="text" class="form-control"
-													id="ten_nhasx_${nsx.maNhaSanXuat}"
-													name="ten_nhasx_${nsx.maNhaSanXuat}"
-													value="${nsx.tenNhaSanXuat}">
+												<label for="ten_nhasx_${row.maKhachHang}" class="form-label">Tên
+													khách hàng:</label> <input type="text" class="form-control"
+													id="ten_nhasx_${row.maKhachHang}"
+													name="ten_nhasx_${row.maKhachHang}"
+													value="${row.tenKhachHang}">
 											</div>
 											<div class="mb-3">
-												<label for="dia_chi${nsx.maNhaSanXuat}" class="form-label">Địa
+												<label for="dia_chi${row.maKhachHang}" class="form-label">Địa
 													chỉ:</label> <input type="text" class="form-control"
-													id="dia_chi${nsx.maNhaSanXuat}"
-													name="dia_chi${nsx.maNhaSanXuat}" value="${nsx.diaChi}">
+													id="dia_chi${row.maKhachHang}"
+													name="dia_chi${row.maKhachHang}" value="${row.diaChi}">
 											</div>
 											<div class="mb-3">
-												<label for="so_đt${nsx.maNhaSanXuat}" class="form-label">Số
+												<label for="so_đt${row.maKhachHang}" class="form-label">Số
 													điện thoại:</label> <input type="text" class="form-control"
-													id="so_đt${nsx.maNhaSanXuat}"
-													name="so_dien_thoai${nsx.maNhaSanXuat}"
-													value="${nsx.soDienThoai}">
+													id="so_đt${row.maKhachHang}" name="so_đt${row.maKhachHang}"
+													value="${row.soDienThoai}">
 											</div>
 											<div class="mb-3">
-												<label for="email${nsx.maNhaSanXuat}" class="form-label">Email:</label>
+												<label for="email${row.maKhachHang}" class="form-label">Email:</label>
 												<input type="text" class="form-control"
-													id="email${nsx.maNhaSanXuat}"
-													name="email${nsx.maNhaSanXuat}" value="${nsx.email}">
+													id="email${row.maKhachHang}" name="email${row.maKhachHang}"
+													value="${row.email}">
 											</div>
+											<div class="mb-3">
+												<label for="ten_dangnhap${row.maKhachHang}"
+													class="form-label">Tên đăng nhập:</label> <input
+													type="text" class="form-control"
+													id="ten_dangnhap${row.maKhachHang}"
+													name="ten_dangnhap${row.maKhachHang}"
+													value="${row.tendangnhap}">
+											</div>
+											<div class="mb-3">
+												<label for="mat_khau${row.maKhachHang}" class="form-label">Mật
+													khẩu:</label> <input type="password" class="form-control"
+													id="mat_khau${row.maKhachHang}"
+													name="mat_khau${row.maKhachHang}" value="${row.matkhau}">
+											</div>
+
 											<div class="modal-footer">
 												<button type="button" class="btn btn-secondary"
 													data-bs-dismiss="modal">Đóng</button>
@@ -295,6 +324,7 @@
 				</div>
 			</div>
 		</div>
+	</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script
